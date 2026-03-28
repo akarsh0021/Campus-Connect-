@@ -1,0 +1,61 @@
+/* ── Company Dashboard Styles ────────────────────────────── */
+.company-jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.company-job-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+.cj-main {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+}
+
+.cj-info h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.cj-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cj-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.cj-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.cj-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .company-job-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .cj-main { flex-direction: column; align-items: flex-start; }
+  .cj-actions { width: 100%; }
+}

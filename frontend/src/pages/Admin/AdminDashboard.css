@@ -1,0 +1,64 @@
+/* ── Admin Dashboard Styles ───────────────────────────────── */
+.skills-bar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.skill-bar-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 40px;
+  gap: 12px;
+  align-items: center;
+}
+.skill-bar-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: right;
+}
+.skill-bar-track {
+  height: 8px;
+  background: var(--bg-glass);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+.skill-bar-count {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.admin-link-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.admin-link-card svg:first-child {
+  color: var(--accent-blue);
+  flex-shrink: 0;
+}
+.admin-link-card div { flex: 1; }
+.admin-link-card h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.admin-link-card p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+.admin-link-card svg:last-child {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+.admin-link-card:hover svg:last-child {
+  transform: translateX(4px);
+}

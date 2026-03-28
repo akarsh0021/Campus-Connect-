@@ -1,0 +1,17 @@
+/* ── Post Job Styles ─────────────────────────────────────── */
+.post-job-card {
+  max-width: 800px;
+  padding: 40px;
+}
+.post-job-card h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.pj-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}

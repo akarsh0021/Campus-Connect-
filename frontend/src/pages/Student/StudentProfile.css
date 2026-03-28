@@ -1,0 +1,99 @@
+/* ── Student Profile Page Styles ──────────────────────────── */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .profile-layout { grid-template-columns: 1fr; }
+}
+
+.profile-sidebar {
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+  color: white;
+  margin: 0 auto 16px;
+}
+
+.profile-sidebar h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-email {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: 24px;
+}
+
+.parsed-skills-section {
+  text-align: left;
+  margin-bottom: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+.parsed-skills-section h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.parsed-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.resume-section {
+  text-align: left;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+.resume-section h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.resume-file {
+  font-size: var(--font-size-xs);
+  color: var(--accent-blue);
+  word-break: break-all;
+}
+.resume-empty {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.profile-form h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.profile-form label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

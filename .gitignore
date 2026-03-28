@@ -1,0 +1,28 @@
+# Node and React
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+
+# Python and FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Database
+*.db
+campus_portal.db
+backend/campus_portal.db
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
