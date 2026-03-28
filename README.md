@@ -2,7 +2,7 @@
 
 CampusConnect is a modern, full-stack web application designed to bridge the gap between university students and top recruiters. It automates the recruitment workflow by parsing resumes, analyzing candidate skills mathematically, and generating ranked **AI Match Scores** for every job posting.
 
-![CampusConnect Dashboard Preview](#) *(You can add a screenshot later)*
+
 
 ## 🚀 Key Features
 
