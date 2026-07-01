@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import './Candidates.css';
 
+const cleanSkill = (skill) => 
+  skill ? skill.replace(/\s*\((?:matched_from_dictionary|detected_via_nlp|detected_via_llm)\)$/, '').trim() : '';
+
 export default function Candidates() {
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -99,7 +102,7 @@ export default function Candidates() {
                 {(c.skills || []).length > 0 && (
                   <div className="cand-skills">
                     {c.skills.slice(0, 6).map((s) => (
-                      <span key={s} className="skill-tag">{s}</span>
+                      <span key={s} className="skill-tag">{cleanSkill(s)}</span>
                     ))}
                     {c.skills.length > 6 && <span className="skill-tag">+{c.skills.length - 6}</span>}
                   </div>

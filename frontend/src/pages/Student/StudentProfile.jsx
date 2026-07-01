@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import './StudentProfile.css';
 
+const cleanSkill = (skill) => 
+  skill ? skill.replace(/\s*\((?:matched_from_dictionary|detected_via_nlp|detected_via_llm)\)$/, '').trim() : '';
+
 export default function StudentProfile() {
   const { refreshUser } = useAuth();
   const [profile, setProfile] = useState(null);
@@ -31,7 +34,7 @@ export default function StudentProfile() {
         department: p.department || '',
         cgpa: p.cgpa || '',
         graduation_year: p.graduation_year || '',
-        skills: (p.skills || []).join(', '),
+        skills: (p.skills || []).map(cleanSkill).join(', '),
         experience_years: p.experience_years || '',
         bio: p.bio || '',
         phone: p.phone || '',
@@ -77,7 +80,8 @@ export default function StudentProfile() {
       const parsed = res.data.parsed;
       if (parsed.skills.length > 0) {
         const existingSkills = form.skills.split(',').map(s => s.trim()).filter(Boolean);
-        const merged = [...new Set([...existingSkills, ...parsed.skills])];
+        const cleanedParsed = parsed.skills.map(cleanSkill);
+        const merged = [...new Set([...existingSkills, ...cleanedParsed])];
         setForm(prev => ({ ...prev, skills: merged.join(', ') }));
       }
       showToast(`Resume parsed! Found ${parsed.skills.length} skills.`);
@@ -119,7 +123,7 @@ export default function StudentProfile() {
               <h4><Sparkles size={14} /> AI-Detected Skills</h4>
               <div className="parsed-skills">
                 {profile.profile.parsed_skills.map((s) => (
-                  <span key={s} className="skill-tag">{s}</span>
+                  <span key={s} className="skill-tag">{cleanSkill(s)}</span>
                 ))}
               </div>
             </div>

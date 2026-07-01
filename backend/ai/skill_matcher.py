@@ -20,6 +20,10 @@ SYNONYMS: Dict[str, str] = {
     "graphql": "graphql", "gql": "graphql",
     "aws": "amazon web services",
     "gcp": "google cloud platform",
+    "rest": "rest api",
+    "restful": "rest api",
+    "rest api": "rest api",
+    "llm integration": "llm",
 }
 
 

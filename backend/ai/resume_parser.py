@@ -55,7 +55,7 @@ TECH_SKILLS = {
 }
 
 SOFT_SKILLS = {
-    "leadership", "teamwork", "communication", "problem solving", "critical thinking",
+    "leadership", "teamwork", "problem solving", "critical thinking",
     "time management", "adaptability", "creativity", "collaboration", "analytical",
     "project management", "presentation", "negotiation", "decision making",
     "conflict resolution", "mentoring", "strategic thinking", "attention to detail",
@@ -106,6 +106,10 @@ SKILL_DISPLAY_MAP = {
     "api": "API",
     "github": "GitHub",
     "tailwind": "Tailwind CSS",
+    "rest": "REST API",
+    "restful": "REST API",
+    "rest api": "REST API",
+    "llm integration": "LLM",
 }
 
 
@@ -233,6 +237,12 @@ _SKILL_BLOCKLIST = {
     "local", "aug", "jan", "feb", "mar", "apr", "may", "jun", "jul", "sep",
     "oct", "nov", "dec", "pdfs", "pdf", "docs", "api", "apis", "url", "urls",
     "operating", "manual", "automated", "llms", "rag",
+    # Additional blocklist entries to stop remaining false positives
+    "candidates", "students", "participants", "users", "recruiters",
+    "roles", "shortlisting", "matching", "parsing", "recommendations",
+    "tracking", "validation", "injection", "workflow", "stage",
+    "interaction", "communication", "shortlist", "portal", "placement",
+    "concurrent", "session", "endpoint", "dashboard", "interface", "technologies",
 }
 
 
@@ -273,6 +283,10 @@ def is_skill_like(span, matched_dict_skills_lower) -> bool:
 
     # Block if span is already covered by a dictionary match
     if text_lower in matched_dict_skills_lower:
+        return False
+
+    # Reject spans where ALL tokens have pos_ == "PROPN" and the span text appears in the first 100 characters of the resume
+    if all(t.pos_ == "PROPN" for t in span) and text_lower in span.doc.text[:100].lower():
         return False
 
     return True
@@ -420,7 +434,8 @@ def extract_skills(text: str) -> List[str]:
         layer1_tagged.append(f"{display} (matched_from_dictionary)")
 
     for display in detected_skills.values():
-        layer1_tagged.append(f"{display} (detected_via_nlp)")
+        display_mapped = SKILL_DISPLAY_MAP.get(display.lower(), display)
+        layer1_tagged.append(f"{display_mapped} (detected_via_nlp)")
 
     # ---------------------------------------------------------
     # LAYER 2: LLM Extraction via Groq

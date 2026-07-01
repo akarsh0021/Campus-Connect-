@@ -16,6 +16,9 @@ import './AdminDashboard.css';
 
 const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e', '#06b6d4'];
 
+const cleanSkill = (skill) => 
+  skill ? skill.replace(/\s*\((?:matched_from_dictionary|detected_via_nlp|detected_via_llm)\)$/, '').trim() : '';
+
 export default function AdminDashboard() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -167,7 +170,7 @@ export default function AdminDashboard() {
           <div className="skills-bar-list">
             {skillData.map((s, i) => (
               <div key={s.skill} className="skill-bar-row">
-                <span className="skill-bar-name">{s.skill}</span>
+                <span className="skill-bar-name">{cleanSkill(s.skill)}</span>
                 <div className="skill-bar-track">
                   <div
                     className="skill-bar-fill"
