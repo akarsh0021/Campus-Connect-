@@ -77,18 +77,73 @@ export default function StudentProfile() {
     setUploading(true);
     try {
       const res = await studentAPI.uploadResume(file);
-      const parsed = res.data.parsed;
-      if (parsed.skills.length > 0) {
-        const existingSkills = form.skills.split(',').map(s => s.trim()).filter(Boolean);
-        const cleanedParsed = parsed.skills.map(cleanSkill);
-        const merged = [...new Set([...existingSkills, ...cleanedParsed])];
-        setForm(prev => ({ ...prev, skills: merged.join(', ') }));
+      const parsed = res.data.parsed || {};
+
+      // Fetch fresh profile to sync skills, parsed_skills, resume_path
+      const meRes = await authAPI.getMe();
+      const newProfile = meRes.data;
+      const p = newProfile.profile || {};
+      setProfile(newProfile);
+
+      // Build auto-fill patch — only overwrite form fields with non-empty parsed values
+      const filledLabels = [];
+      setForm(prev => {
+        const next = { ...prev };
+
+        // Skills: always sync from freshly parsed result (replaces old noisy skills)
+        const parsedSkillsClean = (parsed.skills || []).map(cleanSkill).filter(Boolean);
+        if (parsedSkillsClean.length > 0) {
+          next.skills = parsedSkillsClean.join(', ');
+          filledLabels.push('Skills');
+        }
+
+        if (parsed.cgpa > 0) {
+          next.cgpa = parsed.cgpa;
+          filledLabels.push('CGPA');
+        }
+        if (parsed.experience_years > 0) {
+          next.experience_years = parsed.experience_years;
+          filledLabels.push('Experience');
+        }
+        if (parsed.graduation_year > 0) {
+          next.graduation_year = parsed.graduation_year;
+          filledLabels.push('Graduation Year');
+        }
+        if (parsed.department) {
+          next.department = parsed.department;
+          filledLabels.push('Department');
+        }
+        if (parsed.linkedin) {
+          next.linkedin = parsed.linkedin;
+          filledLabels.push('LinkedIn');
+        }
+        if (parsed.github) {
+          next.github = parsed.github;
+          filledLabels.push('GitHub');
+        }
+        if (parsed.phone) {
+          next.phone = parsed.phone;
+          filledLabels.push('Phone');
+        }
+        if (parsed.bio) {
+          next.bio = parsed.bio;
+          filledLabels.push('Bio');
+        }
+
+        return next;
+      });
+
+      const skillCount = (parsed.skills || []).length;
+      if (filledLabels.length > 0) {
+        showToast(`Resume parsed! Found ${skillCount} skills. Auto-filled: ${filledLabels.join(', ')}`);
+      } else {
+        showToast(`Resume parsed! Found ${skillCount} skills.`);
       }
-      showToast(`Resume parsed! Found ${parsed.skills.length} skills.`);
     } catch {
       showToast('Failed to upload resume');
     } finally {
       setUploading(false);
+      if (fileRef.current) fileRef.current.value = '';
     }
   };
 
