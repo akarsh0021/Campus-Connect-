@@ -101,8 +101,8 @@ export default function StudentProfile() {
           next.cgpa = parsed.cgpa;
           filledLabels.push('CGPA');
         }
-        if (parsed.experience_years > 0) {
-          next.experience_years = parsed.experience_years;
+        if (parsed.experience_years != null) {
+          next.experience_years = parsed.experience_years ?? 0;
           filledLabels.push('Experience');
         }
         if (parsed.graduation_year > 0) {
