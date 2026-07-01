@@ -44,7 +44,7 @@ TECH_SKILLS = {
     # Tools & Others
     "git", "github", "gitlab", "bitbucket", "jira", "confluence", "slack",
     "figma", "adobe xd", "photoshop", "illustrator",
-    "rest", "restful", "api", "microservices", "agile", "scrum",
+    "rest", "restful", "microservices", "agile", "scrum",
     "unit testing", "integration testing", "selenium", "cypress", "jest",
     "pytest", "junit", "mocha", "chai",
     "blockchain", "solidity", "web3", "ethereum",
@@ -110,6 +110,8 @@ SKILL_DISPLAY_MAP = {
     "restful": "REST API",
     "rest api": "REST API",
     "llm integration": "LLM",
+    "groq api": "Groq",
+    "fastapi": "FastAPI",
 }
 
 
