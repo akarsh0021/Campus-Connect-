@@ -1,4 +1,4 @@
-"""Skill matching using TF-IDF and cosine similarity."""
+"""Skill matching using exact normalization, synonym mappings, and Jaccard similarity."""
 from typing import List, Tuple, Dict
 import re
 
@@ -25,7 +25,9 @@ SYNONYMS: Dict[str, str] = {
 
 def normalize_skill(skill: str) -> str:
     """Normalize a skill name to a canonical form."""
-    s = skill.strip().lower()
+    # Strip (matched_from_dictionary), (detected_via_nlp), or (detected_via_llm) source tags
+    s = re.sub(r'\s*\((?:matched_from_dictionary|detected_via_nlp|detected_via_llm)\)$', '', skill, flags=re.IGNORECASE)
+    s = s.strip().lower()
     return SYNONYMS.get(s, s)
 
 

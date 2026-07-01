@@ -179,6 +179,60 @@ def delete_job(
     return {"message": "Job deleted"}
 
 
+@router.get("/recommendations/student")
+def get_job_recommendations(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Get AI-recommended jobs for the current student."""
+    if current_user.role != "student":
+        raise HTTPException(status_code=403, detail="Only students can get recommendations")
+
+    profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Student profile not found")
+
+    # Get active jobs
+    active_jobs = db.query(Job).filter(Job.status == "active").all()
+
+    # Get IDs of jobs already applied to
+    applied_ids = set()
+    apps = db.query(Application).filter(Application.student_id == profile.id).all()
+    for a in apps:
+        applied_ids.add(a.job_id)
+
+    # Build job dicts (exclude already applied)
+    job_dicts = []
+    for job in active_jobs:
+        if job.id in applied_ids:
+            continue
+        company = db.query(CompanyProfile).filter(CompanyProfile.id == job.company_id).first()
+        job_dicts.append({
+            "id": job.id,
+            "title": job.title,
+            "description": job.description,
+            "required_skills": job.required_skills or [],
+            "min_cgpa": job.min_cgpa,
+            "experience_required": job.experience_required,
+            "job_type": job.job_type,
+            "location": job.location,
+            "salary_min": job.salary_min,
+            "salary_max": job.salary_max,
+            "company_name": company.company_name if company else "Unknown",
+            "company_id": job.company_id,
+        })
+
+    student_dict = {
+        "skills": profile.skills or [],
+        "cgpa": profile.cgpa,
+        "experience_years": profile.experience_years,
+        "department": profile.department,
+    }
+
+    recommended = recommend_jobs(student_dict, job_dicts, top_n=10)
+    return recommended
+
+
 @router.get("/{job_id}/candidates")
 def get_ranked_candidates(
     job_id: int,
@@ -243,57 +297,3 @@ def get_ranked_candidates(
         "candidates": ranked,
         "total": len(ranked),
     }
-
-
-@router.get("/recommendations/student")
-def get_job_recommendations(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    """Get AI-recommended jobs for the current student."""
-    if current_user.role != "student":
-        raise HTTPException(status_code=403, detail="Only students can get recommendations")
-
-    profile = db.query(StudentProfile).filter(StudentProfile.user_id == current_user.id).first()
-    if not profile:
-        raise HTTPException(status_code=404, detail="Student profile not found")
-
-    # Get active jobs
-    active_jobs = db.query(Job).filter(Job.status == "active").all()
-
-    # Get IDs of jobs already applied to
-    applied_ids = set()
-    apps = db.query(Application).filter(Application.student_id == profile.id).all()
-    for a in apps:
-        applied_ids.add(a.job_id)
-
-    # Build job dicts (exclude already applied)
-    job_dicts = []
-    for job in active_jobs:
-        if job.id in applied_ids:
-            continue
-        company = db.query(CompanyProfile).filter(CompanyProfile.id == job.company_id).first()
-        job_dicts.append({
-            "id": job.id,
-            "title": job.title,
-            "description": job.description,
-            "required_skills": job.required_skills or [],
-            "min_cgpa": job.min_cgpa,
-            "experience_required": job.experience_required,
-            "job_type": job.job_type,
-            "location": job.location,
-            "salary_min": job.salary_min,
-            "salary_max": job.salary_max,
-            "company_name": company.company_name if company else "Unknown",
-            "company_id": job.company_id,
-        })
-
-    student_dict = {
-        "skills": profile.skills or [],
-        "cgpa": profile.cgpa,
-        "experience_years": profile.experience_years,
-        "department": profile.department,
-    }
-
-    recommended = recommend_jobs(student_dict, job_dicts, top_n=10)
-    return recommended

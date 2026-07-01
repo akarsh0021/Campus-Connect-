@@ -91,10 +91,11 @@ async def upload_resume(
             profile.cgpa = parsed["cgpa"]
         if parsed["experience_years"] > 0 and profile.experience_years == 0:
             profile.experience_years = parsed["experience_years"]
-        # Merge parsed skills with manually added skills
-        existing = set(profile.skills or [])
-        existing.update(parsed["skills"])
-        profile.skills = sorted(list(existing))
+        # Merge parsed skills with manually added skills (strip any legacy tags)
+        from ai.resume_parser import strip_tag
+        existing = {strip_tag(s) for s in (profile.skills or [])}
+        existing.update(strip_tag(s) for s in parsed["skills"])
+        profile.skills = sorted(s for s in existing if s)
         db.commit()
 
     return {

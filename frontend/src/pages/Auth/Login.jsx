@@ -99,8 +99,8 @@ export default function Login() {
           <p className="demo-title">Demo Accounts</p>
           <div className="demo-grid">
             <button className="demo-btn" onClick={() => setForm({ email: 'admin@campus.edu', password: 'admin123' })}>Admin</button>
-            <button className="demo-btn" onClick={() => setForm({ email: 'rahul.sharma@student.edu', password: 'password123' })}>Student</button>
-            <button className="demo-btn" onClick={() => setForm({ email: 'hr@techcorp.com', password: 'password123' })}>Company</button>
+            <button className="demo-btn" onClick={() => setForm({ email: 'ria.sharma@student.edu', password: 'student123' })}>Student</button>
+            <button className="demo-btn" onClick={() => setForm({ email: 'hr@techcorp.com', password: 'company123' })}>Company</button>
           </div>
         </div>
       </div>

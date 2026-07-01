@@ -132,7 +132,7 @@ export default function Candidates() {
                 <span className={`badge status-${c.status}`} style={{ marginBottom: '8px' }}>
                   {c.status}
                 </span>
-                {c.status === 'pending' && (
+                {(c.status === 'applied' || c.status === 'pending') && (
                   <>
                     <button
                       className="btn btn-success btn-sm"

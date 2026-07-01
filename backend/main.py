@@ -25,6 +25,21 @@ from routers.notifications import router as notifications_router
 # Create tables
 Base.metadata.create_all(bind=engine)
 
+# Pre-warm spaCy NLP model on startup to prevent cold-start timeouts
+try:
+    from ai.resume_parser import init_nlp
+    init_nlp()
+except Exception as e:
+    print(f"Warning: Failed to pre-warm spaCy NLP model: {e}")
+
+# Diagnostic connection message
+from config import DATABASE_URL
+db_type = "PostgreSQL (Neon)" if DATABASE_URL.startswith("postgres") else "SQLite (Local)"
+print("\n" + "="*50)
+print(f"DB Connected: {db_type}")
+print(f"URL: {DATABASE_URL[:45]}...")
+print("="*50 + "\n")
+
 # Initialize FastAPI
 app = FastAPI(
     title="Campus Placement Portal API",

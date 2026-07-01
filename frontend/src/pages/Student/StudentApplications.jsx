@@ -44,13 +44,13 @@ export default function StudentApplications() {
 
       {/* Filter tabs */}
       <div className="filter-tabs mb-24">
-        {['all', 'pending', 'shortlisted', 'selected', 'rejected'].map((f) => (
+        {['all', 'applied', 'shortlisted', 'selected', 'rejected'].map((f) => (
           <button
             key={f}
             className={`filter-tab ${filter === f ? 'active' : ''}`}
             onClick={() => setFilter(f)}
           >
-            {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+            {f === 'all' ? 'All' : f === 'applied' ? 'Applied' : f.charAt(0).toUpperCase() + f.slice(1)}
             <span className="filter-count">
               {f === 'all' ? applications.length : applications.filter((a) => a.status === f).length}
             </span>

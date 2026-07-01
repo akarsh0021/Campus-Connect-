@@ -9,3 +9,7 @@ pdfplumber
 python-docx
 scikit-learn
 aiofiles
+python-dotenv
+psycopg2-binary
+spacy
+

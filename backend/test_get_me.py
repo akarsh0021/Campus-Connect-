@@ -1,4 +1,4 @@
-from tests_setup import * # just a comment
+# test_get_me.py
 from database import SessionLocal
 from models.user import User
 from services.auth_service import create_access_token
